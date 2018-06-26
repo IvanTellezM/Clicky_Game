@@ -9,38 +9,41 @@ class App extends Component {
   // Setting this.state.friends to the friends json array
   state = {
       friends: friends, //IF key and value are the same we can define just one. 
-      clickedCards: [], 
+      clickedCards: [],
       score: 0, 
       highscore: 0, 
   };
 
 
-  cardClick = id => {
-    const newfrients = [];
-    if (this.state.clickedCards.includes(id)) {
+    cardClick = id => {
+      const newFriends = [];
       //GAME LOST
-      this.setState({ score: 0, clickedCards: [] })
-      alert ('Duplicate clicked!')
-    } else {//GAME CONTINUES
-        this.state.clickedCards.push(id);
-        this.state.score++;
-        //REWRITING HIGHSCORE
-      if (this.state.score > this.state.highscore) {
-        this.setState({ 
-          highscore: this.state.score,
-        });
+      if (this.state.clickedCards.includes(id)) {
+        this.setState({ score: 0, clickedCards: [] })
+        alert ('Duplicate clicked!')
+      } else {//GAME CONTINUES
+          this.state.clickedCards.push(id);
+          this.state.score++;
+          //REWRITING HIGHSCORE
+        if (this.state.score > this.state.highscore) {
+          this.setState({ 
+            highscore: this.state.score,
+          });
+        }
       }
-    }
 
     //RANDOMLY LOOPING THROUGH STUDENTS ARRAY AND MIGRATING EACH CHOSEN INDEX
-    for (let idx=0; idx<12; idx++) { 
-      newfrients.push(this.state.frients.splice
-        (Math.floor(Math.random()*this.state.students.length),1)[0]
-      )
-    }
-    this.setState({ friends: newfriends });
-  };
-
+  
+  for (let idx=0; idx<12; idx++) { 
+    newFriends.push(this.state.friends.splice
+      (Math.floor
+        (Math.random()*this.state.friends.length),1
+      )[0]
+    )
+  }
+  //Fixed typo friends: newFriends
+  this.setState({ friends: newFriends });
+};
   
 
   // Map over this.state.friends and render a FriendCard component for each friend object
@@ -58,7 +61,6 @@ class App extends Component {
             cardClick={this.cardClick}
             id={friend.id}
             key={friend.id}
-            name={friend.name}
             image={friend.image}
           />
         ))}

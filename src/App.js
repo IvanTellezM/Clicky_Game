@@ -8,30 +8,58 @@ import "./App.css";
 class App extends Component {
   // Setting this.state.friends to the friends json array
   state = {
-    friends   //  friends: friends IF key and value are the same we can define just one. 
+      friends: friends, //IF key and value are the same we can define just one. 
+      clickedCards: [], 
+      score: 0, 
+      highscore: 0, 
   };
 
-  removeFriend = id => {
-    // Filter this.state.friends for friends with an id not equal to the id being removed
-    const friends = this.state.friends.filter(friend => friend.id !== id);
-    // Set this.state.friends equal to the new friends array
-    this.setState({ friends });
+
+  cardClick = id => {
+    const newfrients = [];
+    if (this.state.clickedCards.includes(id)) {
+      //GAME LOST
+      this.setState({ score: 0, clickedCards: [] })
+      alert ('Duplicate clicked!')
+    } else {//GAME CONTINUES
+        this.state.clickedCards.push(id);
+        this.state.score++;
+        //REWRITING HIGHSCORE
+      if (this.state.score > this.state.highscore) {
+        this.setState({ 
+          highscore: this.state.score,
+        });
+      }
+    }
+
+    //RANDOMLY LOOPING THROUGH STUDENTS ARRAY AND MIGRATING EACH CHOSEN INDEX
+    for (let idx=0; idx<12; idx++) { 
+      newfrients.push(this.state.frients.splice
+        (Math.floor(Math.random()*this.state.students.length),1)[0]
+      )
+    }
+    this.setState({ friends: newfriends });
   };
+
+  
 
   // Map over this.state.friends and render a FriendCard component for each friend object
   render() {
     return (
       <Wrapper>
-        <Title>Friends List</Title>
+        <Title
+         title = "World Cup County"
+         instructions= "Click on an flag to earn points, but don't click on any more than once!"
+         score={this.state.score}
+         highscore={this.state.highscore}
+         />
         {this.state.friends.map(friend => (
           <FriendCard
-            removeFriend={this.removeFriend}
+            cardClick={this.cardClick}
             id={friend.id}
             key={friend.id}
             name={friend.name}
             image={friend.image}
-            occupation={friend.occupation}
-            location={friend.location}
           />
         ))}
       </Wrapper>
